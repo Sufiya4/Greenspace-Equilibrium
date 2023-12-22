@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenSpace-Equilibrium-Project</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/style.css')}}">
+</head>
+<body >
+    <section id="heading">
+        <h1>GREENSPACE EQUILIBRIUM</h1>
+    </section>
+
+    <section id="data">
+        <label for="areaSelect">Select Area:</label>
+        <select id="areaSelect">
+            <!--<option value="select">SELECT AREA</option>-->
+            <option value="select">Select</option>
+            <option value="jayanagar">Jayanagar</option>
+            <option value="rr_nagar">RR Nagar</option>
+            <option value="banashankari">Banashankari</option>
+            <option value="jp_nagar">JP Nagar</option>
+            <option value="kumaraswamy_layout">Kumaraswamy Layout</option>
+            <option value="mg_road">MG Road</option>
+            <option value="banaswadi">Banaswadi</option>
+            <option value="indranagar">Indira Nagar</option>
+            <option value="kormangala">Kormangala</option>
+            <option value="chickpete">Chickpete</option>
+        </select>
+
+
+        <p id="greenSpaceRatio"></p>
+
+        <!-- ... other HTML code ... -->
+
+<script>
+    document.getElementById('areaSelect').addEventListener('change', function() {
+        var selectedArea = this.value;
+
+        if (selectedArea && selectedArea !== 'select') {
+            // Construct the image URL based on the selected area
+            var imageUrl = '/static/images/' + selectedArea + '.jpg';
+
+            // Make an AJAX request to the Flask server using fetch API
+            fetch('/green-space-ratio?area_name=' + selectedArea)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error fetching data.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('greenSpaceRatio').innerText = 'Green Space Ratio: ' + data.green_space_ratio.toFixed(4)+'%';
+                })
+                .catch(error => {
+                    document.getElementById('greenSpaceRatio').innerText = error.message;
+                });
+        } else {
+            document.getElementById('greenSpaceRatio').innerText = '';
+        }
+    });
+</script>
+
+<!-- ... other HTML code ... -->
+
+    </section>
+</body>
+</html>
